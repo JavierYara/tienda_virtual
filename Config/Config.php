@@ -1,30 +1,18 @@
 <?php 
-	// URL base - Detecta automáticamente si está en Azure
-	$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-	$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-	
-	// Si está en Azure, usar la URL de Azure, sino localhost
-	if (strpos($host, 'tienda-virtual.azurewebsites.net') !== false) {
-		$baseUrl = "https://tienda-virtual.azurewebsites.net";
-	} else {
-		$baseUrl = getenv('BASE_URL') ?: "http://localhost/tienda_virtual";
-	}
-	
-	define('BASE_URL', $baseUrl);
+	const BASE_URL = "https://tienda-virtual.azurewebsites.net";
 
 	//Zona horaria
 	date_default_timezone_set('America/Guatemala');
 
 	//Datos de conexión a Base de Datos
-	// En Azure usa variables de entorno, en local usa valores por defecto
-	define('DB_HOST', getenv('DB_HOST') ?: "localhost");
-	define('DB_NAME', getenv('DB_NAME') ?: "db_tiendavirtual");
-	define('DB_USER', getenv('DB_USER') ?: "root");
-	define('DB_PASSWORD', getenv('DB_PASSWORD') ?: "");
-	define('DB_CHARSET', "utf8");
+	const DB_HOST = "databaseproyecto.mysql.database.azure.com";
+	const DB_NAME = "db_tiendavirtual";
+	const DB_USER = "Javier@databaseproyecto.mysql.database.azure.com";
+	const DB_PASSWORD = "";
+	const DB_CHARSET = "utf8";
 
 	//Para envío de correo
-	define('ENVIRONMENT', getenv('ENVIRONMENT') ? (int)getenv('ENVIRONMENT') : 1);
+	const ENVIRONMENT = 1; // Local: 0, Produccón: 1;
 
 	//Deliminadores decimal y millar Ej. 24,1989.00
 	const SPD = ".";
@@ -35,16 +23,20 @@
 	const CURRENCY = "USD";
 
 	//Api PayPal
-	$paypalUrl = getenv('PAYPAL_URL') ?: "https://api-m.sandbox.paypal.com";
-	define('URLPAYPAL', $paypalUrl);
-	define('IDCLIENTE', getenv('PAYPAL_CLIENT_ID') ?: "");
-	define('SECRET', getenv('PAYPAL_SECRET') ?: "");
+	//SANDBOX PAYPAL
+	const URLPAYPAL = "https://api-m.paypal.com";
+	const IDCLIENTE = "";
+	const SECRET = "";
+	//LIVE PAYPAL
+	//const URLPAYPAL = "https://api-m.paypal.com";
+	//const IDCLIENTE = "";
+	//const SECRET = "";
 
 	//Datos envio de correo
-	define('NOMBRE_REMITENTE', getenv('MAIL_FROM_NAME') ?: "Tienda Virtual");
-	define('EMAIL_REMITENTE', getenv('MAIL_FROM_ADDRESS') ?: "no-reply@abelosh.com");
+	const NOMBRE_REMITENTE = "Tienda Virtual";
+	const EMAIL_REMITENTE = "no-reply@abelosh.com";
 	const NOMBRE_EMPESA = "Tienda Virtual";
-	define('WEB_EMPRESA', getenv('WEB_EMPRESA') ?: "www.abelosh.com");
+	const WEB_EMPRESA = "tienda-virtual.azurewebsites.net";
 
 	const DESCRIPCION = "La mejor tienda en línea con artículos de moda.";
 	const SHAREDHASH = "TiendaVirtual";
@@ -63,7 +55,7 @@
 	const CAT_FOOTER = "1,2,3,4,5";
 
 	//Datos para Encriptar / Desencriptar
-	define('KEY', getenv('APP_KEY') ?: 'abelosh');
+	const KEY = 'abelosh';
 	const METHODENCRIPT = "AES-128-ECB";
 
 	//Envío
@@ -107,26 +99,6 @@
 	//REDES SOCIALES
 	const FACEBOOK = "https://www.facebook.com/abelosh";
 	const INSTAGRAM = "https://www.instagram.com/febel24/";
-
-	// Configuración adicional para Azure
-	if (ENVIRONMENT === 1 && strpos($_SERVER['HTTP_HOST'] ?? '', 'tienda-virtual.azurewebsites.net') !== false) {
-		// Headers de seguridad para producción
-		header('X-Content-Type-Options: nosniff');
-		header('X-Frame-Options: DENY');
-		header('X-XSS-Protection: 1; mode=block');
-		
-		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
-			header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
-		}
-		
-		// Configuración de sesiones seguras
-		ini_set('session.cookie_secure', '1');
-		ini_set('session.cookie_httponly', '1');
-		ini_set('session.use_strict_mode', '1');
-		
-		// Ocultar errores en producción
-		error_reporting(0);
-		ini_set('display_errors', 0);
-	}
+	
 
  ?>
