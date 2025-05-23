@@ -7,8 +7,8 @@
 	//Datos de conexión a Base de Datos
 	const DB_HOST = "databaseproyecto.mysql.database.azure.com";
 	const DB_NAME = "db_tiendavirtual";
-	const DB_USER = "Javier@databaseproyecto.mysql.database.azure.com";
-	const DB_PASSWORD = "";
+	const DB_USER = "Javier";
+	const DB_PASSWORD = "Jey123456789";
 	const DB_CHARSET = "utf8";
 
 	//Para envío de correo
