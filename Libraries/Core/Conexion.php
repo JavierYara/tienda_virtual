@@ -9,7 +9,12 @@ class Conexion{
 			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 			PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 			PDO::ATTR_EMULATE_PREPARES => false,
-			PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+
+		// CONFIGURACIÓN SSL PARA AZURE (OBLIGATORIO)
+            PDO::MYSQL_ATTR_SSL_CA => true,
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            PDO::ATTR_TIMEOUT => 30,
+                
 		);			
 	
 		$this->conect = new PDO($connectionString, DB_USER, DB_PASSWORD, $options);
