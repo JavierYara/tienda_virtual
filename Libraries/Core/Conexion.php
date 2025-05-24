@@ -5,14 +5,16 @@ class Conexion{
 	public function __construct(){
 		$connectionString = "mysql:host=".DB_HOST.";dbname=".DB_NAME.";charset=".DB_CHARSET;
 		try{
-			$this->conect = new PDO($connectionString, DB_USER, DB_PASSWORD);
-			$this->conect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		    //echo "conexión exitosa";
+		$options = array(
+			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+			PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+			PDO::ATTR_EMULATE_PREPARES => false,
+			PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+		);			
+	
+		$this->conect = new PDO($connectionString, DB_USER, DB_PASSWORD, $options);
 
-            // Configuraciones adicionales para Azure MySQL
-			$this->conect->setAttribute(PDO::ATTR_TIMEOUT, 30);
-			$this->conect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
-			
+		//echo "conexión exitosa";
 		}catch(PDOException $e){
 			$this->conect = 'Error de conexión';
 		    echo "ERROR: " . $e->getMessage();
@@ -22,6 +24,16 @@ class Conexion{
 	public function conect(){
 		return $this->conect;
 	}
+
+	// Método para verificar si la conexión es exitosa
+    public function isConnected(){
+        return $this->conect !== null && $this->conect instanceof PDO;
+    }
+    
+    // Método para cerrar la conexión
+    public function closeConnection(){
+        $this->conect = null;
+    }
 }
 
 ?>
